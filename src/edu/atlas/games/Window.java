@@ -1,6 +1,22 @@
+/*
+ * Copyright (C) 2014, David Verhaak
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
 package edu.atlas.games;
 
-import java.awt.Component;
 import java.awt.Frame;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
@@ -13,10 +29,12 @@ import javax.media.opengl.GLEventListener;
 import javax.media.opengl.GLProfile;
 import javax.media.opengl.awt.GLCanvas;
 
-import edu.atlas.games.input.Keyboard;
 import edu.atlas.games.input.Mouse;
 
-
+/**
+ * 
+ * @author David Verhaak <david@forcez.nl>
+ */
 public class Window extends Frame implements GLEventListener, WindowListener
 {
 
@@ -36,21 +54,12 @@ public class Window extends Frame implements GLEventListener, WindowListener
 		canvas.addMouseListener(mouse);
 		canvas.addGLEventListener(this);
 		add(canvas);
-		//this.addKeyListener(keyboard);
-		
 		addWindowListener(this);
 	}
 	
 	public GLCanvas getCanvas()
 	{
 		return this.canvas;
-	}
-
-	@Override
-	public void repaint()
-	{
-		super.repaint();
-		//canvas.display();
 	}
 
 	@Override
