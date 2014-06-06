@@ -13,8 +13,7 @@
  * 
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
+ */
 package edu.atlas.games;
 
 /**
@@ -24,12 +23,12 @@ package edu.atlas.games;
 public class Launcher
 {
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args)
+	/**
+	 * @param args the command line arguments
+	 */
+	public static void main(String[] args)
 	{
-		new Thread(new ThreadGroup("atlas"), new Game(), "Game").start();
-    }
+		new Thread(Game.THREAD_GROUP, new Game(), "Game").start();
+	}
 
 }

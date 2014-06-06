@@ -13,13 +13,14 @@
  * 
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
+ */
 package edu.atlas.games.input;
 
 /**
  *
+ * @todo Write documentation
  * @author David Verhaak <david@forcez.nl>
+ * @since 0.1
  */
 public enum ButtonState
 {
