@@ -13,14 +13,13 @@
  * 
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+*/
+
 package edu.atlas.games.input;
 
 /**
  *
- * @todo Write documentation
  * @author David Verhaak <david@forcez.nl>
- * @since 0.1
  */
 public enum Keys
 {
@@ -124,57 +123,31 @@ public enum Keys
 	BACKSLASH(220, "Back slash"),
 	CLOSE_BRACKET(221, "Close bracket"),
 	SINGLE_QUOTE(222, "Single quote");
-
+	
 	private int code;
 	private String name;
-
-	/**
-	 *
-	 * @todo Write documentation
-	 * @param code
-	 * @param name
-	 * @since 0.1
-	 */
+	
 	private Keys(int code, String name)
 	{
 		this.code = code;
 		this.name = name;
 	}
-
-	/**
-	 *
-	 * @todo Write documentation
-	 * @return
-	 * @since 0.1
-	 */
+	
 	public int getCode()
 	{
 		return code;
 	}
-
-	/**
-	 *
-	 * @todo Write documentation
-	 * @return
-	 * @since 0.1
-	 */
+	
 	public String getName()
 	{
 		return name;
 	}
-
-	/**
-	 *
-	 * @todo Write documentation
-	 * @param code
-	 * @return
-	 * @since 0.1
-	 */
+	
 	public static Keys getKeyByCode(int code)
 	{
-		for (Keys key : Keys.values())
+		for(Keys key : Keys.values())
 		{
-			if (key.getCode() == code)
+			if(key.getCode() == code)
 			{
 				return key;
 			}

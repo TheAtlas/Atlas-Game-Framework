@@ -13,12 +13,14 @@
  * 
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+*/
+
 package edu.atlas.games.graphics;
 
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
+import java.awt.Transparency;
 import java.awt.color.ColorSpace;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.image.ComponentColorModel;
@@ -39,39 +41,23 @@ import edu.atlas.games.Vector2;
 
 /**
  *
- * @todo Write documentation
  * @author David Verhaak <david@forcez.nl>
- * @since 0.1
  */
-public class SpriteBatch
+public class SpriteBatch 
 {
 
 	private Game game;
-
-	/**
-	 *
-	 * @todo Write documentation
-	 * @param game
-	 * @since 0.1
-	 */
+	
 	public SpriteBatch(Game game)
 	{
 		this.game = game;
 	}
-
-	/**
-	 *
-	 * @todo Write documentation
-	 * @param startPos
-	 * @param endPos
-	 * @param color
-	 * @since 0.1
-	 */
+	
 	public void drawLine(Vector2 startPos, Vector2 endPos, Color color)
 	{
-		GL2 gl = game.getWindow().getCanvas().getGL().getGL2();
-		if (gl != null)
+		if(game.getGL() != null)
 		{
+			GL2 gl = game.getGL();
 			gl.glBegin(GL.GL_LINES);
 			gl.glColor4d(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha());
 			gl.glVertex2f(startPos.x, startPos.y);
@@ -79,41 +65,26 @@ public class SpriteBatch
 			gl.glEnd();
 		}
 	}
-
-	/**
-	 *
-	 * @todo Write documentation
-	 * @param point
-	 * @param color
-	 * @since 0.1
-	 */
+	
 	public void drawPoint(Vector2 point, Color color)
 	{
-		GL2 gl = game.getWindow().getCanvas().getGL().getGL2();
-		if (gl != null)
+		if(game.getGL() != null)
 		{
+			GL2 gl = game.getGL();
 			gl.glBegin(GL.GL_POINTS);
 			gl.glColor4d(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha());
 			gl.glVertex2f(point.x, point.y);
 			gl.glEnd();
 		}
 	}
-
-	/**
-	 *
-	 * @todo Write documentation
-	 * @param center
-	 * @param radius
-	 * @param color
-	 * @since 0.1
-	 */
+	
 	public void drawCircle(Vector2 center, float radius, Color color)
 	{
-		GL2 gl = game.getWindow().getCanvas().getGL().getGL2();
-		if (gl != null)
+		if(game.getGL() != null)
 		{
+			GL2 gl = game.getGL();
 			gl.glColor4d(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha());
-			for (float angle = 0; angle < Math.PI * 2; angle += ((Math.PI * 2) / 50))
+			for(float angle = 0; angle < Math.PI * 2; angle += ((Math.PI * 2) / 50))
 			{
 				gl.glBegin(GL2.GL_POLYGON);
 				gl.glVertex2d(center.x, center.y);
@@ -123,45 +94,29 @@ public class SpriteBatch
 			}
 		}
 	}
-
-	/**
-	 *
-	 * @todo Write documentation
-	 * @param rectangle
-	 * @param color
-	 * @since 0.1
-	 */
+	
 	public void drawRectangle(Rectangle rectangle, Color color)
 	{
-		GL2 gl = game.getWindow().getCanvas().getGL().getGL2();
-		if (gl != null)
+		if(game.getGL() != null)
 		{
+			GL2 gl = game.getGL();
 			gl.glColor4d(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha());
 			gl.glRectf(rectangle.getLeft(), rectangle.getTop(), rectangle.getRight(), rectangle.getBottom());
 		}
 	}
-
-	/**
-	 *
-	 * @todo Write documentation
-	 * @param rectangle
-	 * @param arcw
-	 * @param arch
-	 * @param color
-	 * @since 0.1
-	 */
+	
 	public void drawRoundedRectangle(Rectangle rectangle, float arcw, float arch, Color color)
 	{
-		GL2 gl = game.getWindow().getCanvas().getGL().getGL2();
-		if (gl != null)
+		if(game.getGL() != null)
 		{
+			GL2 gl = game.getGL();
 			gl.glColor4d(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha());
 			RoundRectangle2D.Float rect = new RoundRectangle2D.Float(rectangle.x, rectangle.y, rectangle.width, rectangle.height, arcw, arch);
-			for (float x = rect.x; x < (rect.x + rect.width); x++)
+			for(float x = rect.x; x < (rect.x + rect.width); x++)
 			{
-				for (float y = rect.y; y < (rect.y + rect.height); y++)
+				for(float y = rect.y; y < (rect.y + rect.height); y++)
 				{
-					if (rect.contains(x, y))
+					if(rect.contains(x, y))
 					{
 						gl.glBegin(GL.GL_POINTS);
 						gl.glVertex2f(x, y);
@@ -171,83 +126,41 @@ public class SpriteBatch
 			}
 		}
 	}
-
-	/**
-	 *
-	 * @todo Write documentation
-	 * @param string
-	 * @param position
-	 * @param font
-	 * @param color
-	 * @since 0.1
-	 */
+	
 	public void drawString(String string, Vector2 position, Font font, Color color)
 	{
-		if (game.getWindow().getCanvas().getGL().getGL2() != null)
+		if(game.getGL() != null)
 		{
 			TextRenderer renderer = new TextRenderer(font);
 			renderer.setColor(color);
 			renderer.beginRendering(game.getWindow().getCanvas().getWidth(), game.getWindow().getCanvas().getHeight());
-			renderer.draw(string, (int) position.x, (int) (game.getWindow().getCanvas().getHeight() - position.y - renderer.getBounds(string).getHeight()));
+			renderer.draw(string, (int) position.x, (int) (game.getSize().y - position.y - renderer.getBounds(string).getHeight()));
 			renderer.endRendering();
 		}
 	}
-
-	/**
-	 *
-	 * @todo Write documentation
-	 * @param string
-	 * @param position
-	 * @param font
-	 * @since 0.1
-	 */
+	
 	public void drawString(String string, Vector2 position, Font font)
 	{
 		drawString(string, position, font, Color.WHITE);
 	}
-
-	/**
-	 *
-	 * @todo Write documentation
-	 * @param string
-	 * @param position
-	 * @param color
-	 * @since 0.1
-	 */
+	
 	public void drawString(String string, Vector2 position, Color color)
 	{
 		drawString(string, position, new Font("Arial", Font.PLAIN, 12), color);
 	}
-
-	/**
-	 *
-	 * @todo Write documentation
-	 * @param string
-	 * @param position
-	 * @since 0.1
-	 */
+	
 	public void drawString(String string, Vector2 position)
 	{
 		drawString(string, position, new Font("Arial", Font.PLAIN, 12), Color.WHITE);
 	}
-
-	/**
-	 *
-	 * @todo Write documentation
-	 * @param texture
-	 * @param position
-	 * @since 0.1
-	 */
+	
 	public void draw(Texture2D texture, Vector2 position)
 	{
-		GL2 gl = game.getWindow().getCanvas().getGL().getGL2();
-		if (gl != null)
+		if(game.getGL() != null)
 		{
+			GL2 gl = game.getGL();
 			WritableRaster raster = Raster.createInterleavedRaster(DataBuffer.TYPE_BYTE, texture.getWidth(), texture.getHeight(), 4, null);
-			ComponentColorModel colorModel = new ComponentColorModel(ColorSpace.getInstance(ColorSpace.CS_sRGB), new int[]
-			{
-				8, 8, 8, 8
-			}, true, false, ComponentColorModel.TRANSLUCENT, DataBuffer.TYPE_BYTE);
+			ComponentColorModel colorModel = new ComponentColorModel(ColorSpace.getInstance(ColorSpace.CS_sRGB), new int[] {8, 8, 8, 8}, true, false, ComponentColorModel.TRANSLUCENT, DataBuffer.TYPE_BYTE);
 			Texture2D image = new Texture2D(colorModel, raster, false, null);
 			Graphics2D graphics = image.createGraphics();
 			graphics.drawImage(texture, null, null);

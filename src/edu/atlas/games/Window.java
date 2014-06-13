@@ -13,7 +13,8 @@
  * 
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+*/
+
 package edu.atlas.games;
 
 import java.awt.Frame;
@@ -31,10 +32,8 @@ import javax.media.opengl.awt.GLCanvas;
 import edu.atlas.games.input.Mouse;
 
 /**
- *
- * @todo Write documentation
+ * 
  * @author David Verhaak <david@forcez.nl>
- * @since 0.1
  */
 public class Window extends Frame implements GLEventListener, WindowListener
 {
@@ -43,178 +42,90 @@ public class Window extends Frame implements GLEventListener, WindowListener
 	private GLCapabilities capabilities;
 	private GLCanvas canvas;
 	private Mouse mouse;
-
-	/**
-	 *
-	 * @todo Write documentation
-	 * @param game
-	 * @since 0.1
-	 */
+	
 	public Window(Game game)
 	{
-		this.game = game;
 		mouse = new Mouse();
-		setSize(600, 400);
+		addMouseListener(mouse);
+		this.game = game;
 		capabilities = new GLCapabilities(GLProfile.getDefault());
+		setSize(600, 400);
 		canvas = new GLCanvas(capabilities);
-		add(canvas);
 		canvas.addMouseListener(mouse);
 		canvas.addGLEventListener(this);
+		add(canvas);
 		addWindowListener(this);
-		addMouseListener(mouse);
 	}
-
-	/**
-	 *
-	 * @todo Write documentation
-	 * @return
-	 * @since 0.1
-	 */
+	
 	public GLCanvas getCanvas()
 	{
 		return this.canvas;
 	}
 
-	/**
-	 *
-	 * @todo Write documentation
-	 * @param drawable
-	 * @since 0.1
-	 */
 	@Override
-	public void init(GLAutoDrawable drawable)
-	{
-		GL2 gl = drawable.getGL().getGL2();
-		gl.glMatrixMode(GL2.GL_PROJECTION);
-		gl.glLoadIdentity();
-		gl.glClearColor(0, 0, 255, 1);
-		gl.glClear(GL.GL_COLOR_BUFFER_BIT);
-		gl.glOrtho(0, 600, 400, 0, 0, 1);
-		gl.glViewport(0, 0, 600, 400);
-	}
-
-	/**
-	 *
-	 * @todo Write documentation
-	 * @param drawable
-	 * @since 0.1
-	 */
-	@Override
-	public void dispose(GLAutoDrawable drawable)
+	public void init(GLAutoDrawable glad)
 	{
 	}
 
-	/**
-	 *
-	 * @todo Write documentation
-	 * @param drawable
-	 * @since 0.1
-	 */
+	@Override
+	public void dispose(GLAutoDrawable glad)
+	{
+	}
+
 	@Override
 	public void display(GLAutoDrawable drawable)
 	{
 		GL2 gl = drawable.getGL().getGL2();
 		gl.glMatrixMode(GL2.GL_PROJECTION);
 		gl.glLoadIdentity();
-		gl.glClearColor(0, 0, 255, 1);
 		gl.glClear(GL.GL_COLOR_BUFFER_BIT);
 		gl.glOrtho(0, 600, 400, 0, 0, 1);
-		if (game.isRunning())
+		if(game.isRunning())
 		{
 			game.draw();
 		}
 	}
 
-	/**
-	 *
-	 * @todo Write documentation
-	 * @param drawable
-	 * @param x
-	 * @param y
-	 * @param width
-	 * @param height
-	 * @since 0.1
-	 */
 	@Override
-	public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height)
+	public void reshape(GLAutoDrawable glad, int i, int i1, int i2, int i3)
 	{
 	}
 
-	/**
-	 *
-	 * @todo Write documentation
-	 * @param windowEvent
-	 * @since 0.1
-	 */
 	@Override
-	public void windowOpened(WindowEvent windowEvent)
+	public void windowOpened(WindowEvent e)
 	{
 	}
 
-	/**
-	 *
-	 * @todo Write documentation
-	 * @param windowEvent
-	 * @since 0.1
-	 */
 	@Override
-	public void windowClosing(WindowEvent windowEvent)
+	public void windowClosing(WindowEvent e)
 	{
 		game.shutdown();
 	}
 
-	/**
-	 *
-	 * @todo Write documentation
-	 * @param windowEvent
-	 * @since 0.1
-	 */
 	@Override
-	public void windowClosed(WindowEvent windowEvent)
+	public void windowClosed(WindowEvent e)
 	{
 	}
 
-	/**
-	 *
-	 * @todo Write documentation
-	 * @param windowEvent
-	 * @since 0.1
-	 */
 	@Override
-	public void windowIconified(WindowEvent windowEvent)
+	public void windowIconified(WindowEvent e)
 	{
 	}
 
-	/**
-	 *
-	 * @todo Write documentation
-	 * @param windowEvent
-	 * @since 0.1
-	 */
 	@Override
-	public void windowDeiconified(WindowEvent windowEvent)
+	public void windowDeiconified(WindowEvent e)
 	{
 	}
 
-	/**
-	 *
-	 * @todo Write documentation
-	 * @param windowEvent
-	 * @since 0.1
-	 */
 	@Override
-	public void windowActivated(WindowEvent windowEvent)
+	public void windowActivated(WindowEvent e)
 	{
 	}
 
-	/**
-	 *
-	 * @todo Write documentation
-	 * @param windowEvent
-	 * @since 0.1
-	 */
 	@Override
-	public void windowDeactivated(WindowEvent windowEvent)
+	public void windowDeactivated(WindowEvent e)
 	{
 	}
+	
+	
 }

@@ -13,64 +13,64 @@
  * 
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+*/
+
 package edu.atlas.games;
 
 import java.awt.KeyboardFocusManager;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import edu.atlas.games.content.Content;
+import javax.media.opengl.GL2;
+
 import edu.atlas.games.graphics.SpriteBatch;
 import edu.atlas.games.graphics.Texture2D;
+import edu.atlas.games.input.ButtonState;
 import edu.atlas.games.input.Keyboard;
-import edu.atlas.games.input.KeyboardState;
-import edu.atlas.games.input.Keys;
+import edu.atlas.games.input.Mouse;
+import edu.atlas.games.input.MouseState;
 
-/**
- * Handles the main of the Game.
- * @author David Verhaak <david@forcez.nl>
- * @since 0.1
- */
+
 public class Game implements Runnable
 {
-
-	public static final ThreadGroup THREAD_GROUP = new ThreadGroup("atlas-games");
+	
 	private static final Logger LOG = Logger.getLogger(Game.class.getName());
 
 	private final int TARGET_FPS = 60;
 	private final long OPTIMAL_TIME = 1000 / TARGET_FPS;
 	private final int MAX_FRAME_SKIPS = 5;
-
+	
 	private long timeStarted;
 	private int framesSkipped;
 	private long timeDifference;
 	private long sleepTime;
-
+	private long timeInitialized;
+	private long lastStatusStore;
+	private long statusIntervalTimer;
+	private long totalFramesSkipped;
+	private long framesSkippedPerStatCycle;
+	private int frameCountPerStatCycle;
+	private long totalFrameCount;
+	private double[] fpsStore;
+	private long statsCount;
+	private double averageFPS;
+	
 	private boolean running;
-
+	
 	private Window window;
 	private SpriteBatch spriteBatch;
-
+		
 	private Texture2D texture;
+	private List<Vector2> edges;
 
-	/**
-	 * Constructs the Game by creating a <code>Window</code>,
-	 * constructing the <code>SpriteBatch</code> and adding the KeyEventDispatcher.
-	 * @since 0.1
-	 */
 	public Game()
 	{
 		window = new Window(this);
 		spriteBatch = new SpriteBatch(this);
 		KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(new Keyboard());
 	}
-
-	/**
-	 * Runs the main game loop which calls <code>initialize</code> and <code>loadContent</code>
-	 * on start and calling <code>update</code> and <code>draw</code> every frame.
-	 * @since 0.1
-	 */
+	
 	@Override
 	public void run()
 	{
@@ -78,7 +78,8 @@ public class Game implements Runnable
 		loadContent();
 		window.setVisible(true);
 		running = true;
-		while (running)
+		timeInitialized = System.currentTimeMillis();
+		while(running)
 		{
 			timeStarted = System.currentTimeMillis();
 			framesSkipped = 0;
@@ -86,7 +87,7 @@ public class Game implements Runnable
 			window.getCanvas().display();
 			timeDifference = System.currentTimeMillis() - timeStarted;
 			sleepTime = OPTIMAL_TIME - timeDifference;
-			if (sleepTime > 0)
+			if(sleepTime > 0)
 			{
 				try
 				{
@@ -97,7 +98,7 @@ public class Game implements Runnable
 					shutdown();
 				}
 			}
-			while (sleepTime < 0 && framesSkipped < MAX_FRAME_SKIPS)
+			while(sleepTime < 0 && framesSkipped < MAX_FRAME_SKIPS)
 			{
 				update();
 				sleepTime += OPTIMAL_TIME;
@@ -106,101 +107,76 @@ public class Game implements Runnable
 		}
 		shutdown();
 	}
-
-	/**
-	 * Initializes the Game.
-	 * This method is automatically called when the game is started.
-	 * @since 0.1
-	 */
+	
 	public void initialize()
 	{
 		LOG.log(Level.INFO, "Initialize");
-		for (GameComponent component : Components.getGameComponents())
+		for(GameComponent component : Components.getGameComponents())
 		{
 			component.initialize();
 		}
 	}
-
-	/**
-	 * Loads the content of the Game.
-	 * This method is automatically called when the game is started.
-	 * @since 0.1
-	 */
+	
 	public void loadContent()
 	{
 		LOG.log(Level.INFO, "LoadContent");
-		texture = Content.load(Texture2D.class, "content/images/umbrella.png");
-		for (DrawableGameComponent component : Components.getDrawableGameComponents())
+		texture = Content.load("content/images/umbrella.png");
+		for(DrawableGameComponent component : Components.getDrawableGameComponents())
 		{
 			component.loadContent();
 		}
 	}
-
-	/**
-	 * Updates the Game.
-	 * This method is automatically called once every frame.
-	 * @since 0.1
-	 */
+	
 	public void update()
 	{
-		KeyboardState keyboard = Keyboard.getState();
-		if (keyboard.isKeyDown(Keys.ESCAPE))
+		MouseState mouseState = Mouse.getState();
+		if(mouseState.getLeftButton() == ButtonState.PRESSED)
 		{
-			this.shutdown();
+			System.out.println("Left mouse click");
 		}
-		for (GameComponent component : Components.getGameComponents())
+		for(GameComponent component : Components.getGameComponents())
 		{
-			if (component.isEnabled())
+			if(component.isEnabled())
 			{
 				component.update();
 			}
 		}
 	}
-
-	/**
-	 * Draws the Game.
-	 * This method is automatically called once every frame.
-	 * @since 0.1
-	 */
+	
 	public void draw()
 	{
-		spriteBatch.draw(texture, new Vector2(300, 300));
-		for (DrawableGameComponent component : Components.getDrawableGameComponents())
+		spriteBatch.draw(texture, new Vector2(0, 0));
+		for(DrawableGameComponent component : Components.getDrawableGameComponents())
 		{
-			if (component.isVisible())
+			if(component.isVisible())
 			{
 				component.draw(spriteBatch);
 			}
 		}
 	}
-
-	/**
-	 * Shuts the Game down.
-	 * This method is automatically called when the Window closes.
-	 * @since 0.1
-	 */
+	
 	public void shutdown()
 	{
 		LOG.log(Level.INFO, "Shutdown");
 		running = false;
 		System.exit(0);
 	}
-
-	/**
-	 * Gets the current instance of the <code>Window</code> class.
-	 * @return The current instance of the <code>Window</code> class.
-	 * @since 0.1
-	 */
+	
+	public GL2 getGL()
+	{
+		return window.getCanvas().getGL().getGL2();
+	}
+	
 	public Window getWindow()
 	{
 		return window;
 	}
-
-	/**
-	 * Checks if the main game loop is running or not.
-	 * @return The current state of the main game loop.
-	 * @since 0.1
-	 */
+	
+	public Vector2 getSize()
+	{
+		return new Vector2(window.getCanvas().getWidth(), window.getCanvas().getHeight());
+	}
+	
 	public boolean isRunning()
 	{
 		return running;
