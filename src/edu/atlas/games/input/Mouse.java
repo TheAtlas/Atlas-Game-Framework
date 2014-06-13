@@ -13,8 +13,7 @@
  * 
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
+ */
 package edu.atlas.games.input;
 
 import java.awt.event.MouseAdapter;
@@ -22,55 +21,75 @@ import java.awt.event.MouseEvent;
 
 /**
  *
+ * @todo Write documentation
  * @author David Verhaak <david@forcez.nl>
+ * @since 0.1
  */
 public class Mouse extends MouseAdapter
 {
-	
+
 	private static MouseState mouseState;
 
+	/**
+	 *
+	 * @todo Write documentation
+	 * @return
+	 * @since 0.1
+	 */
 	public static MouseState getState()
 	{
-		if(mouseState == null)
+		if (mouseState == null)
 		{
 			mouseState = new MouseState();
 		}
 		return mouseState;
 	}
-	
+
+	/**
+	 *
+	 * @todo Write documentation
+	 * @param mouseEvent
+	 * @since 0.1
+	 */
 	@Override
 	public void mouseClicked(MouseEvent mouseEvent)
 	{
-		mouseState.setEvent(mouseEvent);
+		getState().setEvent(mouseEvent);
 	}
-	
+
+	/**
+	 *
+	 * @todo Write documentation
+	 * @param mouseEvent
+	 * @since 0.1
+	 */
 	@Override
 	public void mouseMoved(MouseEvent mouseEvent)
 	{
-		mouseState.setEvent(mouseEvent);
+		getState().setEvent(mouseEvent);
 	}
-	
+
+	/**
+	 *
+	 * @todo Write documentation
+	 * @param mouseEvent
+	 * @since 0.1
+	 */
 	@Override
 	public void mousePressed(MouseEvent mouseEvent)
 	{
-		mouseState.setEvent(mouseEvent);
+		getState().setEvent(mouseEvent);
 	}
-	
+
+	/**
+	 *
+	 * @todo Write documentation
+	 * @param mouseEvent
+	 * @since 0.1
+	 */
 	@Override
 	public void mouseReleased(MouseEvent mouseEvent)
 	{
-		mouseState.setEvent(mouseEvent);
-	}
-	
-	@Override
-	public void mouseEntered(MouseEvent mouseEvent)
-	{
-		mouseState.setEvent(mouseEvent);
-	}
-	
-	@Override
-	public void mouseExited(MouseEvent mouseEvent)
-	{
-		mouseState.setEvent(mouseEvent);
+		getState().setEvent(mouseEvent);
 	}
 }

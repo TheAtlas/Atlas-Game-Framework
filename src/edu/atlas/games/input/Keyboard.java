@@ -13,8 +13,7 @@
  * 
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
+ */
 package edu.atlas.games.input;
 
 import java.awt.KeyEventDispatcher;
@@ -24,8 +23,10 @@ import java.util.List;
 import java.util.logging.Logger;
 
 /**
- * 
+ *
+ * @todo Write documentation
  * @author David Verhaak <david@forcez.nl>
+ * @since 0.1
  */
 public class Keyboard implements KeyEventDispatcher
 {
@@ -34,11 +35,24 @@ public class Keyboard implements KeyEventDispatcher
 
 	private static List<Keys> keys = new LinkedList<>();
 
+	/**
+	 *
+	 * @todo Write documentation
+	 * @return
+	 * @since 0.1
+	 */
 	public static KeyboardState getState()
 	{
 		return KeyboardState.getInstance();
 	}
 
+	/**
+	 *
+	 * @todo Write documentation
+	 * @param keyEvent
+	 * @return
+	 * @since 0.1
+	 */
 	@Override
 	public boolean dispatchKeyEvent(KeyEvent keyEvent)
 	{
